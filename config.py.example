@@ -2,5 +2,17 @@ BOT_TOKEN = ""
 ROUTER_IP = "192.168.88.1"
 ROUTER_USER = "admin"
 ROUTER_PASS = "password"
+
+# Interval untuk monitoring (dalam detik)
 CHECK_INTERVAL = 30  # Detik
+HOTSPOT_CHK_INTERVAL = 30  # Detik - untuk monitoring hotspot login/logout
+DHCP_CHK_INTERVAL = 30  # Detik - untuk monitoring DHCP lease events
+INTERFACE_CHK_INTERVAL = 30  # Detik - untuk monitoring interface status (link up/down)
+
 ALLOWED_USERS = [12345678, 87654321]
+
+NOTIFICATION_ENABLED = True
+SEND_TO_ALLOWED_USERS = True  # Kirim notif ke semua ALLOWED_USERS
+
+ROUTER_BACKUP_PATH = "/flash/backup"  # Lokasi penyimpanan backup di router
+MAX_BACKUP_SIZE_MB = 50  # Maksimal ukuran backup yang bisa dikirim (MB)

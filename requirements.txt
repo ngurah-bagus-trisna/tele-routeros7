@@ -1,0 +1,8 @@
+# Library utama untuk bot Telegram (versi async terbaru)
+python-telegram-bot[job-queue]>=20.0
+
+# Library untuk melakukan HTTP request ke REST API MikroTik
+requests>=2.31.0
+
+# Library tambahan jika ingin menggunakan request async (opsional tapi disarankan)
+httpx>=0.24.0

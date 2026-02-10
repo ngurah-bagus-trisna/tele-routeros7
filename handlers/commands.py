@@ -1,18 +1,21 @@
+# handlers/commands.py
 from core.router_api import RouterAPI
 from core.database import Database
 from utils.formatter import format_bytes
+from utils.decorators import restricted
 
 api = RouterAPI()
 db = Database()
 
-def traffic_handler(update, context):
-    # Ambil argumen (misal: 1m)
+@restricted
+async def traffic_handler(update, context):
     args = context.args
     period = args[0] if args else None
     
     interfaces = api.get_interfaces()
-    if not interfaces:
-        update.message.reply_text("❌ Gagal mengambil data interface.")
+    if interfaces is None:
+        # Tambahkan await di sini
+        await update.message.reply_text("❌ Gagal mengambil data interface.")
         return
 
     msg = f"📊 **Laporan Trafik**\n"
@@ -28,18 +31,17 @@ def traffic_handler(update, context):
             past_data = db.get_past_data(name, period)
             if past_data:
                 past_rx, past_tx = past_data
-                # Hitung selisih (Pemakaian = Sekarang - Dulu)
                 display_rx = max(0, curr_rx - past_rx)
                 display_tx = max(0, curr_tx - past_tx)
             else:
                 display_rx, display_tx = 0, 0
-                msg += f"⚠️ *{name}*: Data historis belum tersedia.\n"
+                msg += f"⚠️ *{name}*: Data {period} belum ada.\n"
         else:
-            # Jika tanpa argumen, tampilkan total uptime
             display_rx, display_tx = curr_rx, curr_tx
 
         msg += f"🌐 *{name}*\n"
         msg += f"  📥 RX: `{format_bytes(display_rx)}`\n"
-        msg += f"  📤 TX: `{format_bytes(display_tx)}`\n"
+        msg += f"  📤 TX: `{format_bytes(display_tx)}`\n\n"
 
-    update.message.reply_text(msg, parse_mode='Markdown')
+    # Tambahkan await di sini (baris 48 yang bermasalah di log kamu)
+    await update.message.reply_text(msg, parse_mode='Markdown')
